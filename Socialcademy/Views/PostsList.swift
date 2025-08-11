@@ -10,7 +10,9 @@ import SwiftUI
 struct PostsList: View {
     private var posts = [Post.testPost]
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List(posts) { post in
+            Text(post.content)
+        }
     }
 }
 
