@@ -8,8 +8,35 @@
 import SwiftUI
 
 struct NewPostForm: View {
+    @State private var post = Post(title: "", content: "", authorName: "")
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationView {
+            Form {
+                Section {
+                    TextField("Title", text: $title)
+                    TextField("Author Name", text: $authorName)
+                }
+                Section("Content") {
+                    TextEditor(text: $content)
+                        .multilineTextAlignment(.leading)
+                }
+                Button(action: createPost) {
+                    Text("Create Post")
+                }
+                .font(.headline)
+                .frame(maxWidth: .infinity)
+                .foregroundColor(.white)
+                .padding()
+                .listRowBackground(Color.accentColor)
+            }
+            .onSubmit(createPost)
+            .navigationTitle(Text("New Post"))
+        }
+    }
+    
+    private func createPost() {
+        print("Create new post!")
     }
 }
 
