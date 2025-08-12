@@ -9,9 +9,9 @@ import SwiftUI
 
 struct NewPostForm: View {
     @State private var post = Post(title: "", content: "", authorName: "")
+    @Environment(\.dismiss) private var dismiss
     
     typealias CreateAction = (Post) -> Void
-    
     let createAction: CreateAction
     
     var body: some View {
@@ -41,6 +41,7 @@ struct NewPostForm: View {
     
     private func createPost() {
         createAction(post)
+        dismiss()
     }
 }
 
