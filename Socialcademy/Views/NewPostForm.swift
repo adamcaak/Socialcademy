@@ -14,11 +14,11 @@ struct NewPostForm: View {
         NavigationView {
             Form {
                 Section {
-                    TextField("Title", text: $title)
-                    TextField("Author Name", text: $authorName)
+                    TextField("Title", text: $post.title)
+                    TextField("Author Name", text: $post.authorName)
                 }
                 Section("Content") {
-                    TextEditor(text: $content)
+                    TextEditor(text: $post.content)
                         .multilineTextAlignment(.leading)
                 }
                 Button(action: createPost) {
