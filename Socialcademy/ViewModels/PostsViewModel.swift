@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+@MainActor
+class PostsViewModel: ObservableObject {
+    @Published var posts = [Post.testPost]
+}
