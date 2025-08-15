@@ -24,7 +24,7 @@ private extension DocumentReference {
             // We handled this with a force try, while all other errors are passed to the completion handler.
             try! setData(from: value) { error in
                 if let error = error {
-                    continuation.resume(throwing: error) 
+                    continuation.resume(throwing: error)
                     return
                 }
                 continuation.resume()
