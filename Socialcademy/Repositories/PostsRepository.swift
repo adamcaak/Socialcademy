@@ -18,7 +18,7 @@ struct PostsRepository {
     
     static func fetchPosts() async throws -> [Post] {
         let snapshot = try await postsReference
-            .order(by: "timestamp", descending: true)
+            .order(by: "timeStamp", descending: true)
             .getDocuments()
         return snapshot.documents.compactMap { document in
             try! document.data(as: Post.self)
