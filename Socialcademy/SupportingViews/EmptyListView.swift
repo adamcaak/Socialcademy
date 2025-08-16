@@ -43,7 +43,8 @@ struct EmptyListView_Previews: PreviewProvider {
         )
         EmptyListView(
             title: "No Posts",
-            message: "There aren’t any posts yet."
+            message: "There aren’t any posts yet.",
+            retryAction: {}
         )
     }
 }
