@@ -9,12 +9,6 @@ import Foundation
 import FirebaseFirestore
 
 struct PostsRepository: PostsRepositoryProtocol {
-    
-    protocol PostsRepositoryProtocol {
-        func fetchPosts() async throws -> [Post]
-        func create(_ post: Post) async throws
-    }
-    
     let postsReference = Firestore.firestore().collection("posts")
     
     func create(_ post: Post) async throws {
@@ -31,6 +25,23 @@ struct PostsRepository: PostsRepositoryProtocol {
         }
     }
 }
+
+protocol PostsRepositoryProtocol {
+    func fetchPosts() async throws -> [Post]
+    func create(_ post: Post) async throws
+}
+
+#if DEBUG
+struct PostsRepositoryStub: PostsRepositoryProtocol {
+    let state: Loadable<[Post]>
+    
+    func fetchPosts() async throws -> [Post] {
+        return []
+    }
+    
+    func create(_ post: Post) async throws {}
+}
+#endif
 
 private extension DocumentReference {
     func setData<T: Encodable>(from value: T) async throws {
