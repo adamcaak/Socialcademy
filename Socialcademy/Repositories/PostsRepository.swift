@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestore
 
-struct PostsRepository: Identifiable, Codable {
+struct PostsRepository {
     static let postsReference = Firestore.firestore().collection("posts")
     
     static func create(_ post: Post) async throws {
