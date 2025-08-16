@@ -11,7 +11,7 @@ struct NewPostForm: View {
     @State private var post = Post(title: "", content: "", authorName: "")
     @Environment(\.dismiss) private var dismiss
     
-    typealias CreateAction = (Post) -> Void
+    typealias CreateAction = (Post) async throws -> Void
     let createAction: CreateAction
     
     var body: some View {
@@ -40,8 +40,14 @@ struct NewPostForm: View {
     }
     
     private func createPost() {
-        createAction(post)
-        dismiss()
+        Task {
+            do {
+                try await createAction(post)
+                dismiss()
+            } catch {
+                print("[New Post] Cannot create post: \(error)")
+            }
+        }
     }
 }
 
