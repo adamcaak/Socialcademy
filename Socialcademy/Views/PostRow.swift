@@ -43,6 +43,7 @@ struct PostRow: View {
                 .confirmationDialog("Are you sure you want to delete this post?", isPresented: $showConfirmationDialog, titleVisibility: .visible) {
                     Button("Delete", role: .destructive, action: deletePost)
                 }
+                .alert("Cannot Delete Post", error: $error)
             }
         }
         .padding(.vertical)
