@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PostRow: View {
     @State private var showConfirmationDialog = false
+    @State private var error: Error?
     
     typealias DeleteAction = () async throws -> Void
     
@@ -49,7 +50,12 @@ struct PostRow: View {
     
     private func deletePost() {
         Task {
-            try! await deleteAction()
+            do {
+                try await deleteAction()
+            } catch {
+                print("[PostRow] Cannot delete post: \(error)")
+                self.error = error
+            }
         }
     }
 }
