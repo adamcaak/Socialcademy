@@ -41,4 +41,13 @@ class PostsViewModel: ObservableObject {
             self?.posts.value?.removeAll() { $0.id == post.id }
         }
     }
+    
+    func makeFavoriteAction(for post: Post) -> () async throws -> Void {
+        return { [weak self] in
+            let newValue = !post.isFavorite
+            try await newValue ? self?.postsRepository.favorite(post) : self?.postsRepository.unFavorite(post)
+            guard let i = self?.posts.value?.firstIndex(of: post) else { return }
+            self?.posts.value?[i].isFavorite = newValue
+        }
+    }
 }
