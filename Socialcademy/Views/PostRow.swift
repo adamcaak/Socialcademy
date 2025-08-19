@@ -11,10 +11,10 @@ struct PostRow: View {
     @State private var showConfirmationDialog = false
     @State private var error: Error?
     
-    typealias DeleteAction = () async throws -> Void
+    typealias Action = () async throws -> Void
     
     let post: Post
-    let deleteAction: DeleteAction
+    let deleteAction: Action
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
