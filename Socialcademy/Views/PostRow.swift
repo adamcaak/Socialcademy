@@ -60,6 +60,17 @@ struct PostRow: View {
             }
         }
     }
+    
+    private func favoritePost() {
+        Task {
+            do {
+                try await favoriteAction()
+            } catch {
+                print("[PostRow] Cannot favorite post: \(error)")
+                self.error = error
+            }
+        }
+    }
 }
 
 struct PostRow_Previews: PreviewProvider {
