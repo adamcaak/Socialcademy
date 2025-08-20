@@ -12,9 +12,15 @@ class PostsViewModel: ObservableObject {
     @Published var posts: Loadable<[Post]> = .loading
     
     private let postsRepository: PostsRepositoryProtocol
+    private let filter: Filter
     
-    init(postsRepository: PostsRepositoryProtocol = PostsRepository()) {
+    enum Filter {
+        case all, favorites
+    }
+    
+    init(postsRepository: PostsRepositoryProtocol = PostsRepository(), filter: Filter = .all) {
         self.postsRepository = postsRepository
+        self.filter = filter
     }
     
     func fetchAllPosts() {
@@ -48,9 +54,5 @@ class PostsViewModel: ObservableObject {
                 guard let i = self?.posts.value?.firstIndex(of: post) else { return }
                 self?.posts.value?[i].isFavorite = newValue
             })
-    }
-    
-    enum Filter {
-        case all, favorites
     }
 }
