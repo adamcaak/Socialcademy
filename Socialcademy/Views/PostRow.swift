@@ -51,28 +51,6 @@ struct PostRow: View {
         }
         .padding(.vertical)
     }
-    
-    private func deletePost() {
-        Task {
-            do {
-                try await deleteAction()
-            } catch {
-                print("[PostRow] Cannot delete post: \(error)")
-                self.error = error
-            }
-        }
-    }
-    
-    private func favoritePost() {
-        Task {
-            do {
-                try await favoriteAction()
-            } catch {
-                print("[PostRow] Cannot favorite post: \(error)")
-                self.error = error
-            }
-        }
-    }
 }
 
 private extension PostRow {
