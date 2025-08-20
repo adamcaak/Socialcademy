@@ -24,25 +24,11 @@ class PostRowViewModel: ObservableObject {
     }
     
     func deletePost() {
-        Task {
-            do {
-                try await deleteAction()
-            } catch {
-                print("[PostRow] Cannot delete post: \(error)")
-                self.error = error
-            }
-        }
+        withErrorHandlingTask(perform: deleteAction)
     }
     
     func favoritePost() {
-        Task {
-            do {
-                try await favoriteAction()
-            } catch {
-                print("[PostRow] Cannot favorite post: \(error)")
-                self.error = error
-            }
-        }
+        withErrorHandlingTask(perform: favoriteAction)
     }
     
     private func withErrorHandlingTask(perform action: @escaping Action) {
