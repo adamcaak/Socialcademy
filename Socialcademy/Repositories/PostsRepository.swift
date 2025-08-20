@@ -17,23 +17,11 @@ struct PostsRepository: PostsRepositoryProtocol {
     }
     
     func fetchAllPosts() async throws -> [Post] {
-        let snapshot = try await postsReference
-            .order(by: "timeStamp", descending: true)
-            .getDocuments()
-        return snapshot.documents.compactMap { document in
-            try! document.data(as: Post.self)
-        }
+        return try await fetchPosts(from: postsReference)
     }
     
     func fetchFavoritePosts() async throws -> [Post] {
-        let query = postsReference
-            .order(by: "timeStamp", descending: true)
-            .whereField("isFavorite", isEqualTo: true)
-        let snapshot = try await query.getDocuments()
-        let post = snapshot.documents.compactMap { document in
-            try! document.data(as: Post.self)
-        }
-        return post
+        return try await fetchPosts(from: postsReference.whereField("isFavorite", isEqualTo: true))
     }
     
     private func fetchPosts(from query: Query) async throws -> [Post] {
