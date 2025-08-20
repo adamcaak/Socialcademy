@@ -56,3 +56,14 @@ class PostsViewModel: ObservableObject {
             })
     }
 }
+
+private extension PostsRepositoryProtocol {
+    func fetchPosts(matching filter: PostsViewModel.Filter) async throws -> [Post] {
+        switch filter {
+        case .all:
+            return try await fetchAllPosts()
+        case .favorites:
+            return try await fetchFavoritePosts()
+        }
+    }
+}
