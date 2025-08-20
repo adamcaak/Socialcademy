@@ -10,7 +10,6 @@ import SwiftUI
 struct PostRow: View {
     @ObservedObject var viewModel: PostRowViewModel
     @State private var showConfirmationDialog = false
-
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
