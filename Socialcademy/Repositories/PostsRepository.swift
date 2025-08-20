@@ -16,13 +16,24 @@ struct PostsRepository: PostsRepositoryProtocol {
         try await document.setData(from: post)
     }
     
-    func fetchPosts() async throws -> [Post] {
+    func fetchAllPosts() async throws -> [Post] {
         let snapshot = try await postsReference
             .order(by: "timeStamp", descending: true)
             .getDocuments()
         return snapshot.documents.compactMap { document in
             try! document.data(as: Post.self)
         }
+    }
+    
+    func fetchFavoritePosts() async throws -> [Post] {
+        let query = postsReference
+            .order(by: "timeStamp", descending: true)
+            .whereField("isFavorite", isEqualTo: true)
+        let snapshot = try await query.getDocuments()
+        let post = snapshot.documents.compactMap { document in
+            try! document.data(as: Post.self)
+        }
+        return post
     }
     
     func delete(_ post: Post) async throws {
@@ -42,7 +53,8 @@ struct PostsRepository: PostsRepositoryProtocol {
 }
 
 protocol PostsRepositoryProtocol {
-    func fetchPosts() async throws -> [Post]
+    func fetchFavoritePosts() async throws -> [Post]
+    func fetchAllPosts() async throws -> [Post]
     func create(_ post: Post) async throws
     func delete(_ post: Post) async throws
     func favorite(_ post: Post) async throws
@@ -53,7 +65,11 @@ protocol PostsRepositoryProtocol {
 struct PostsRepositoryStub: PostsRepositoryProtocol {
     let state: Loadable<[Post]>
     
-    func fetchPosts() async throws -> [Post] {
+    func fetchAllPosts() async throws -> [Post] {
+        return []
+    }
+    
+    func fetchFavoritePosts() async throws -> [Post] {
         return []
     }
     
