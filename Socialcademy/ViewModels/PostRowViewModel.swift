@@ -44,4 +44,15 @@ class PostRowViewModel: ObservableObject {
             }
         }
     }
+    
+    private func withErrorHandlingTask(perform action: @escaping Action) {
+        Task {
+            do {
+                try await action()
+            } catch {
+                print("[PostRowViewModel] Error: \(error)")
+                self.error = error
+            }
+        }
+    }
 }
