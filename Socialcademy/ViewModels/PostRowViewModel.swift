@@ -8,6 +8,8 @@
 import Foundation
 
 @MainActor
+@dynamicMemberLookup
+
 class PostRowViewModel: ObservableObject {
     typealias Action = () async throws -> Void
     
@@ -40,5 +42,9 @@ class PostRowViewModel: ObservableObject {
                 self.error = error
             }
         }
+    }
+    
+    subscript<T>(dynamicMember keyPath: KeyPath<Post, T>) -> T {
+        post[keyPath: keyPath]
     }
 }
