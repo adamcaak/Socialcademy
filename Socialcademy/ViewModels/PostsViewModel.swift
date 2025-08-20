@@ -49,4 +49,8 @@ class PostsViewModel: ObservableObject {
                 self?.posts.value?[i].isFavorite = newValue
             })
     }
+    
+    enum Filter {
+        case all, favorites
+    }
 }
