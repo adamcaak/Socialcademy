@@ -23,10 +23,10 @@ class PostsViewModel: ObservableObject {
         self.filter = filter
     }
     
-    func fetchAllPosts() {
+    func fetchPosts() {
         Task {
             do {
-                posts = .loaded(try await postsRepository.fetchAllPosts())
+                posts = .loaded(try await postsRepository.fetchPosts(matching: filter))
             } catch {
                 print("[PostsViewModel] Cannot fetch posts: \(error)")
                 posts = .error(error)
