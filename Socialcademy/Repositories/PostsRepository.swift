@@ -36,6 +36,15 @@ struct PostsRepository: PostsRepositoryProtocol {
         return post
     }
     
+    private func fetchPosts(from query: Query) async throws -> [Post] {
+        let snapshot = try await query
+            .order(by: "timeStamp", descending: true)
+            .getDocuments()
+        return snapshot.documents.compactMap { document in
+            try! document.data(as: Post.self)
+        }
+    }
+    
     func delete(_ post: Post) async throws {
         let document = postsReference.document(post.id.uuidString)
         try await document.delete()
