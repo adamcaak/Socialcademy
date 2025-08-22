@@ -17,11 +17,6 @@ struct MainTabView: View {
             PostsList(viewModel: PostsViewModel(filter: .favorites))
                 .tabItem {
                     Label("Favorites", systemImage: "heart")
-                    
-                    
-                    
-                    
-                    
                 }
         }
     }
