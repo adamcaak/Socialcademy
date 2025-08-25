@@ -28,6 +28,10 @@ class AuthService: ObservableObject {
     func signIn(email: String, password: String) async throws {
         try await auth.signIn(withEmail: email, password: password)
     }
+    
+    func signOut() async {
+        try await auth.signOut()
+    }
 }
 
 private extension FirebaseAuth.User {
