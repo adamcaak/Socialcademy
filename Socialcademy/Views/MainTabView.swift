@@ -18,9 +18,6 @@ struct MainTabView: View {
                 .tabItem {
                     Label("Favorites", systemImage: "heart")
                 }
-            
-            
-            
         }
     }
 }
