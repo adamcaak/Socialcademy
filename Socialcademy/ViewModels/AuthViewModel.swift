@@ -28,6 +28,15 @@ class AuthViewModel: ObservableObject {
             }
         }
     }
+    
+    func makeSignInViewModel() -> SignInViewModel {
+        return SignInViewModel(action: authService.signIn(email:password:))
+    }
+
+    func makeCreateAccountViewModel() -> CreateAccountViewModel {
+        return CreateAccountViewModel(action: authService.createAccount(name:email:password:))
+    }
+
 }
 
 extension AuthViewModel {
