@@ -6,13 +6,14 @@
 //
 
 import Foundation
+import FirebaseAuth
 
 @MainActor
 class AuthService: ObservableObject {
     @Published var isAuthenticated: Bool = false
     
     private let auth = Auth.auth()
-    private var listener = AuthStateDidChangeListenerHandle?
+    private var listener: AuthStateDidChangeListenerHandle?
     
     init() {
         listener = auth.addStateDidChangeListener { [weak self] _, user in
@@ -22,15 +23,15 @@ class AuthService: ObservableObject {
     
     func createAccount(name: String, email: String, password: String) async throws {
         let result = try await auth.createUser(withEmail: email, password: password)
-        try await result.user.updateProfile(.\displayName, to: name)
+        try await result.user.updateProfile(\.displayName, to: name)
     }
     
     func signIn(email: String, password: String) async throws {
         try await auth.signIn(withEmail: email, password: password)
     }
     
-    func signOut() async {
-        try await auth.signOut()
+    func signOut() throws {
+        try auth.signOut()
     }
 }
 
