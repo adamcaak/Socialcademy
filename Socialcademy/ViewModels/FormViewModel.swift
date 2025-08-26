@@ -28,14 +28,18 @@ class FormViewModel<Value>: ObservableObject {
         self.action = action
     }
     
+    private func handleSubmit() async {
+        do {
+            try await action(value)
+        } catch {
+            print("[FormViewModel] Cannot submit: \(error)")
+            self.error = error
+        }
+    }
+    
     nonisolated func submit() {
         Task {
-            do {
-                try await action(value)
-            } catch {
-                print("[FormViewModel] Cannot submit: \(error)")
-                self.error = error
-            }
+            await handleSubmit()
         }
     }
 }
