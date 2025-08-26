@@ -6,3 +6,14 @@
 //
 
 import Foundation
+
+@MainActor
+class AuthViewModel: ObservableObject {
+    @Published var isAuthenticated: Bool = false
+    
+    private let authService = AuthService()
+    
+    init() {
+        authService.$isAuthenticated.assign(to: &$isAuthenticated)
+    }
+}
