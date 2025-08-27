@@ -40,6 +40,7 @@ struct CreateAccountForm: View {
             Button("Sign In", action: dismiss.callAsFunction)
         }
         .onSubmit(viewModel.submit)
+        .alert("Cannot Create Account", error: $viewModel.error)
     }
 }
 
@@ -60,6 +61,7 @@ struct SignInForm<Footer: View>: View {
                     .padding()
             }
             .onSubmit(viewModel.submit)
+            .alert("Cannot Sign In", error: $viewModel.error)
     }
 }
 
