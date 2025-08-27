@@ -24,6 +24,18 @@ struct AuthView: View {
     }
 }
 
+struct CreateAccountForm: View {
+    @StateObject var viewModel: AuthViewModel.CreateAccountViewModel
+    var body: some View {
+        Form {
+            TextField("Name", text: $viewModel.name)
+            TextField("Email", text: $viewModel.email)
+            SecureField("Password", text: $viewModel.password)
+            Button("Create Account", action: viewModel.submit)
+        }
+    }
+}
+
 #Preview {
     AuthView()
 }
