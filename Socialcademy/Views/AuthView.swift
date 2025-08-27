@@ -36,8 +36,8 @@ struct CreateAccountForm: View {
                 .textContentType(.newPassword)
         } footer: {
             Button("Create Account", action: viewModel.submit)
-                .padding()
                 .buttonStyle(.primary)
+            Button("Sign In", action: dismiss.callAsFunction)
         }
         .onSubmit(viewModel.submit)
     }
@@ -49,18 +49,17 @@ struct SignInForm<Footer: View>: View {
     
     var body: some View {
         Form {
-            TextField("Email", text: $viewModel.email)
-                .textContentType(.emailAddress)
-            SecureField("Password", text: $viewModel.password)
-                .textContentType(.password)
-        } footer: {
-            Button("Sign In", action: dismiss.callAsFunction)
-                .padding()
-                .buttonStyle(.primary)
-            footer()
-                .padding()
-        }
-        .onSubmit(viewModel.submit)
+                TextField("Email", text: $viewModel.email)
+                    .textContentType(.emailAddress)
+                SecureField("Password", text: $viewModel.password)
+                    .textContentType(.password)
+            } footer: {
+                Button("Sign In", action: viewModel.submit)
+                    .buttonStyle(.primary)
+                footer()
+                    .padding()
+            }
+            .onSubmit(viewModel.submit)
     }
 }
 
