@@ -33,6 +33,7 @@ struct CreateAccountForm: View {
             SecureField("Password", text: $viewModel.password)
             Button("Create Account", action: viewModel.submit)
         }
+        .navigationTitle("Create Account")
     }
 }
 
