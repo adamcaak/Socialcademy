@@ -41,6 +41,7 @@ struct CreateAccountForm: View {
         }
         .onSubmit(viewModel.submit)
         .alert("Cannot Create Account", error: $viewModel.error)
+        .disabled(viewModel.isWorking)
     }
 }
 
@@ -62,6 +63,7 @@ struct SignInForm<Footer: View>: View {
             }
             .onSubmit(viewModel.submit)
             .alert("Cannot Sign In", error: $viewModel.error)
+            .disabled(viewModel.isWorking)
     }
 }
 
@@ -85,6 +87,8 @@ struct Form<Content: View, Footer: View>: View {
 }
 
 struct PrimaryButtonStyle: ButtonStyle {
+    @Environment(\.isEnabled) private var isEnabled
+    
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding()
@@ -92,6 +96,7 @@ struct PrimaryButtonStyle: ButtonStyle {
             .foregroundColor(.white)
             .background(Color.accentColor)
             .cornerRadius(10)
+            .animation(.default, value: isEnabled)
     }
 }
 
