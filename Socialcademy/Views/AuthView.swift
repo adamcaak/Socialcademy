@@ -36,9 +36,9 @@ struct CreateAccountForm: View {
             SecureField("Password", text: $viewModel.password)
                 .textContentType(.newPassword)
             Button("Create Account", action: viewModel.submit)
-                .onSubmit(viewModel.submit)
         }
         .navigationTitle("Create Account")
+        .onSubmit(viewModel.submit)
     }
 }
 
@@ -47,17 +47,31 @@ struct SignInForm<Footer: View>: View {
     @ViewBuilder let footer: () -> Footer
     
     var body: some View {
-        Form {
-            TextField("Email", text: $viewModel.email)
-                .textContentType(.name)
-                .textInputAutocapitalization(.never)
-            SecureField("Password", text: $viewModel.password)
-                .textContentType(.password)
+        VStack {
+            Text("Socialcademy")
+                .font(.title.bold())
+            Group {
+                TextField("Email", text: $viewModel.email)
+                    .textContentType(.name)
+                    .textInputAutocapitalization(.never)
+                SecureField("Password", text: $viewModel.password)
+                    .textContentType(.password)
+            }
+            .padding()
+            .background(Color.secondary.opacity(0.15))
+            .cornerRadius(10)
             Button("Sign In", action: viewModel.submit)
-                .onSubmit(viewModel.submit)
+                .padding()
+                .frame(maxWidth: .infinity)
+                .foregroundColor(.white)
+                .background(Color.accentColor)
+                .cornerRadius(10)
             footer()
+                .padding()
         }
-        .navigationTitle("Sign In")
+        .padding()
+        .navigationBarHidden(true)
+        .onSubmit(viewModel.submit)
     }
 }
 
