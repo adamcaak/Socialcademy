@@ -92,6 +92,13 @@ struct PrimaryButtonStyle: ButtonStyle {
     }
 }
 
+extension ButtonStyle where Self == PrimaryButtonStyle {
+    static var primary: PrimaryButtonStyle {
+        PrimaryButtonStyle()
+    }
+}
+
+
 #Preview {
     AuthView()
 }
