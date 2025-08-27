@@ -26,6 +26,7 @@ struct AuthView: View {
 
 struct CreateAccountForm: View {
     @StateObject var viewModel: AuthViewModel.CreateAccountViewModel
+    
     var body: some View {
         Form {
             TextField("Name", text: $viewModel.name)
@@ -34,6 +35,21 @@ struct CreateAccountForm: View {
             Button("Create Account", action: viewModel.submit)
         }
         .navigationTitle("Create Account")
+    }
+}
+
+struct SignInForm<Footer: View>: View {
+    @StateObject var viewModel: AuthViewModel.SignInViewModel
+    @ViewBuilder let footer: () -> Footer
+    
+    var body: some View {
+        Form {
+            TextField("Email", text: $viewModel.email)
+            SecureField("Password", text: $viewModel.password)
+            Button("Sign In", action: viewModel.submit)
+            footer()
+        }
+        .navigationTitle("Sign In")
     }
 }
 
