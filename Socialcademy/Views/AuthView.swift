@@ -54,11 +54,7 @@ struct SignInForm<Footer: View>: View {
                     .textContentType(.password)
             } footer: {
                 Button("Sign In", action: viewModel.submit)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .foregroundColor(.white)
-                    .background(Color.accentColor)
-                    .cornerRadius(10)
+                    .buttonStyle(PrimaryButtonStyle())
                 footer()
                     .padding()
             }
