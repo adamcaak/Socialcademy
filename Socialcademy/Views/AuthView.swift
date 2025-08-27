@@ -75,6 +75,25 @@ struct SignInForm<Footer: View>: View {
     }
 }
 
+struct Form<Content: View, Footer: View>: View {
+    @ViewBuilder let content: () -> Content
+    @ViewBuilder let footer: () -> Footer
+    
+    var body: some View {
+        VStack {
+            Text("Socialcademy")
+                .font(.title.bold())
+            content()
+                .padding()
+                .background(Color.secondary.opacity(0.15))
+                .cornerRadius(10)
+            footer()
+        }
+        .navigationBarHidden(true)
+        .padding()
+    }
+}
+
 #Preview {
     AuthView()
 }
