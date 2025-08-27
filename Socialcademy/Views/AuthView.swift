@@ -24,20 +24,21 @@ struct AuthView: View {
 
 struct CreateAccountForm: View {
     @StateObject var viewModel: AuthViewModel.CreateAccountViewModel
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         Form {
             TextField("Name", text: $viewModel.name)
                 .textContentType(.name)
-                .textInputAutocapitalization(.words)
             TextField("Email", text: $viewModel.email)
                 .textContentType(.emailAddress)
-                .textInputAutocapitalization(.never)
             SecureField("Password", text: $viewModel.password)
                 .textContentType(.newPassword)
+        } footer: {
             Button("Create Account", action: viewModel.submit)
+                .padding()
+                .buttonStyle(.primary)
         }
-        .navigationTitle("Create Account")
         .onSubmit(viewModel.submit)
     }
 }
@@ -48,17 +49,18 @@ struct SignInForm<Footer: View>: View {
     
     var body: some View {
         Form {
-                TextField("Email", text: $viewModel.email)
-                    .textContentType(.emailAddress)
-                SecureField("Password", text: $viewModel.password)
-                    .textContentType(.password)
-            } footer: {
-                Button("Sign In", action: viewModel.submit)
-                    .buttonStyle(PrimaryButtonStyle())
-                footer()
-                    .padding()
-            }
-            .onSubmit(viewModel.submit)
+            TextField("Email", text: $viewModel.email)
+                .textContentType(.emailAddress)
+            SecureField("Password", text: $viewModel.password)
+                .textContentType(.password)
+        } footer: {
+            Button("Sign In", action: dismiss.callAsFunction)
+                .padding()
+                .buttonStyle(.primary)
+            footer()
+                .padding()
+        }
+        .onSubmit(viewModel.submit)
     }
 }
 
