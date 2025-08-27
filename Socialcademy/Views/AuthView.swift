@@ -47,31 +47,22 @@ struct SignInForm<Footer: View>: View {
     @ViewBuilder let footer: () -> Footer
     
     var body: some View {
-        VStack {
-            Text("Socialcademy")
-                .font(.title.bold())
-            Group {
+        Form {
                 TextField("Email", text: $viewModel.email)
-                    .textContentType(.name)
-                    .textInputAutocapitalization(.never)
+                    .textContentType(.emailAddress)
                 SecureField("Password", text: $viewModel.password)
                     .textContentType(.password)
+            } footer: {
+                Button("Sign In", action: viewModel.submit)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .foregroundColor(.white)
+                    .background(Color.accentColor)
+                    .cornerRadius(10)
+                footer()
+                    .padding()
             }
-            .padding()
-            .background(Color.secondary.opacity(0.15))
-            .cornerRadius(10)
-            Button("Sign In", action: viewModel.submit)
-                .padding()
-                .frame(maxWidth: .infinity)
-                .foregroundColor(.white)
-                .background(Color.accentColor)
-                .cornerRadius(10)
-            footer()
-                .padding()
-        }
-        .padding()
-        .navigationBarHidden(true)
-        .onSubmit(viewModel.submit)
+            .onSubmit(viewModel.submit)
     }
 }
 
