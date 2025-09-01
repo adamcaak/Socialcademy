@@ -9,7 +9,7 @@ import Foundation
 import FirebaseFirestore
 
 struct PostsRepository: PostsRepositoryProtocol {
-    let postsReference = Firestore.firestore().collection("posts_v1")
+    let postsReference = Firestore.firestore().collection("posts_v2")
     
     func create(_ post: Post) async throws {
         let document = postsReference.document(post.id.uuidString)
