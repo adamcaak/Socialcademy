@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+struct User: Identifiable, Equatable, Codable {
+    var id: String
+    var name: String
+}
