@@ -9,14 +9,14 @@ import Foundation
 
 @MainActor
 class AuthViewModel: ObservableObject {
-    @Published var isAuthenticated: Bool = false
+    @Published var user: User?
     @Published var email: String = ""
     @Published var password: String = ""
     
     private let authService = AuthService()
     
     init() {
-        authService.$isAuthenticated.assign(to: &$isAuthenticated)
+        authService.$user.assign(to: &$user)
     }
     
     func signIn() {
