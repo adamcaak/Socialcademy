@@ -10,6 +10,7 @@ import FirebaseFirestore
 
 struct PostsRepository: PostsRepositoryProtocol {
     let postsReference = Firestore.firestore().collection("posts_v2")
+    var user: User
     
     func create(_ post: Post) async throws {
         let document = postsReference.document(post.id.uuidString)
@@ -56,11 +57,13 @@ protocol PostsRepositoryProtocol {
     func delete(_ post: Post) async throws
     func favorite(_ post: Post) async throws
     func unFavorite(_ post: Post) async throws
+    var user: User { get }
 }
 
 #if DEBUG
 struct PostsRepositoryStub: PostsRepositoryProtocol {
     let state: Loadable<[Post]>
+    var user = User.testUser
     
     func fetchAllPosts() async throws -> [Post] {
         return []
