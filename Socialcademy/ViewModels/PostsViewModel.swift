@@ -18,7 +18,7 @@ class PostsViewModel: ObservableObject {
         case all, favorites
     }
     
-    init(postsRepository: PostsRepositoryProtocol = PostsRepository(), filter: Filter = .all) {
+    init(postsRepository: PostsRepositoryProtocol, filter: Filter = .all) {
         self.postsRepository = postsRepository
         self.filter = filter
     }
