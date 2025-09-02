@@ -54,7 +54,7 @@ struct PostsList: View {
                 }
             }
             .sheet(isPresented: $showNewPostForm) {
-                NewPostForm(createAction: viewModel.makeCreateAction())
+                NewPostForm(viewModel: viewModel.makeNewPostViewModel())
             }
         }
         .onAppear {
