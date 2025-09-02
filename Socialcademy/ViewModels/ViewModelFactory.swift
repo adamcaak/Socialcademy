@@ -19,3 +19,9 @@ class ViewModelFactory: ObservableObject {
         return PostsViewModel(postsRepository: PostsRepository(user: user), filter: filter)
     }
 }
+
+#if DEBUG
+extension ViewModelFactory {
+    static let preview = ViewModelFactory(user: User.testUser)
+}
+#endif
