@@ -16,13 +16,12 @@ struct NewPostForm: View {
             Form {
                 Section {
                     TextField("Title", text: $viewModel.title)
-                    TextField("Author Name", text: viewModel.author)
                 }
                 Section("Content") {
                     TextEditor(text: $viewModel.content)
                         .multilineTextAlignment(.leading)
                 }
-                Button(action: $viewModel.submit) {
+                Button(action: viewModel.submit) {
                     if viewModel.isWorking {
                         ProgressView()
                     } else {
