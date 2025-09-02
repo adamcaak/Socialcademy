@@ -64,6 +64,16 @@ class PostsViewModel: ObservableObject {
                 self?.posts.value?[i].isFavorite = newValue
             })
     }
+    
+    func makeNewPostViewModel() -> FormViewModel<Post> {
+        return FormViewModel(
+            initialValue: Post(title: "", content: "", author: postsRepository.user),
+            action: { [weak self] post in
+                try await self?.postsRepository.create(post)
+                self?.posts.value?.insert(post, at: 0)
+            }
+        )
+    }
 }
 
 private extension PostsRepositoryProtocol {
