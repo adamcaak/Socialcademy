@@ -37,6 +37,10 @@ struct NewPostForm: View {
             }
             .onSubmit(viewModel.submit)
             .navigationTitle(Text("New Post"))
+            .onChange(of: viewModel.isWorking) { isWorking in
+                guard !isWorking, viewModel.error == nil else { return }
+                dismiss()
+            }
         }
         .disabled(viewModel.isWorking)
         .alert("Cannot create Post", error: $viewModel.error)
