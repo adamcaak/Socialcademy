@@ -16,7 +16,7 @@ struct NewPostForm: View {
             Form {
                 Section {
                     TextField("Title", text: $viewModel.title)
-                    TextField("Author Name", text: $post.authorName)
+                    TextField("Author Name", text: viewModel.author)
                 }
                 Section("Content") {
                     TextEditor(text: $viewModel.content)
