@@ -11,6 +11,7 @@ import FirebaseFirestore
 struct PostsRepository: PostsRepositoryProtocol {
     let postsReference = Firestore.firestore().collection("posts_v2")
     let favoritesReference = Firestore.firestore().collection("favorites")
+    let newPost = post.setting(\.isFavorite, to: true)
     var user: User
     
     func create(_ post: Post) async throws {
@@ -122,4 +123,12 @@ struct Favorite: Identifiable, Codable {
     
     let postID: Post.ID
     let userID: User.ID
+}
+
+private extension Post {
+    func setting<T>(_ property: WritableKeyPath<Post, T>, to newValue: T) -> Post {
+        var post = self
+        post[keyPath: property] = newValue
+        return post
+    }
 }
