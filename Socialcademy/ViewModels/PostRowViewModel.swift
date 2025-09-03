@@ -16,7 +16,7 @@ class PostRowViewModel: ObservableObject {
     @Published var post: Post
     @Published var error: Error?
     
-    private let deleteAction: Action
+    private let deleteAction: Action?
     private let favoriteAction: Action
     
     init(post: Post, deleteAction: @escaping Action, favoriteAction: @escaping Action) {
