@@ -43,26 +43,29 @@ class PostsViewModel: ObservableObject {
         }
     }
     
-//    func makeCreateAction() -> NewPostForm.CreateAction {
-//        return { [weak self] post in
-//            try await self?.postsRepository.create(post)
-//            self?.posts.value?.insert(post, at: 0)
-//        }
-//    }
+    //    func makeCreateAction() -> NewPostForm.CreateAction {
+    //        return { [weak self] post in
+    //            try await self?.postsRepository.create(post)
+    //            self?.posts.value?.insert(post, at: 0)
+    //        }
+    //    }
     
     func makePostRowViewModel(for post: Post) -> PostRowViewModel {
+        let deleteAction = { [weak self] in
+            try await self?.postsRepository.delete(post)
+            self?.posts.value?.removeAll { $0 == post }
+        }
+        let favoriteAction = { [weak self] in
+            let newValue = !post.isFavorite
+            try await newValue ? self?.postsRepository.favorite(post) : self?.postsRepository.unFavorite(post)
+            guard let i = self?.posts.value?.firstIndex(of: post) else { return }
+            self?.posts.value?[i].isFavorite = newValue
+        }
         return PostRowViewModel(
             post: post,
-            deleteAction: { [weak self] in
-                try await self?.postsRepository.delete(post)
-                self?.posts.value?.removeAll() { $0.id == post.id}
-            },
-            favoriteAction: { [weak self] in
-                let newValue = !post.isFavorite
-                try await newValue ? self?.postsRepository.favorite(post) : self?.postsRepository.unFavorite(post)
-                guard let i = self?.posts.value?.firstIndex(of: post) else { return }
-                self?.posts.value?[i].isFavorite = newValue
-            })
+            deleteAction: postsRepository.canDelete(post) ? deleteAction : nil,
+            favoriteAction: favoriteAction
+        )
     }
     
     func makeNewPostViewModel() -> FormViewModel<Post> {
