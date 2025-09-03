@@ -95,3 +95,9 @@ private extension DocumentReference {
         }
     }
 }
+
+extension PostsRepositoryProtocol {
+    func canDelete(_ post: Post) -> Bool {
+        post.author.id == user.id
+    }
+}
