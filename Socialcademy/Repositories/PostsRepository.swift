@@ -87,8 +87,11 @@ struct PostsRepositoryStub: PostsRepositoryProtocol {
     func favorite(_ post: Post) async throws {}
     func unFavorite(_ post: Post) async throws {}
     
-    func fetchPosts(by author: User) async throws -> [Post] {
-        return try await state.simulate()
+    func fetchPosts(from query: Query) async throws -> [Post] {
+        return try await query
+            .order(by: "timestamp", descending: true)
+            .getDocuments(as: Post.self)
+        
     }
 }
 #endif
