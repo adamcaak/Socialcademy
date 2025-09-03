@@ -41,7 +41,7 @@ struct PostRow: View {
             }
             .labelStyle(.iconOnly)
         }
-        .padding(.vertical)
+        .padding()
     }
 }
 
