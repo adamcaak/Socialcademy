@@ -112,7 +112,11 @@ extension PostsRepositoryProtocol {
     }
 }
 
-struct Favorite: Codable {
+struct Favorite: Identifiable, Codable {
+    var id: String {
+        postID.uuidString + "-" + userID
+    }
+    
     let postID: Post.ID
     let userID: User.ID
 }
