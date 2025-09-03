@@ -40,7 +40,6 @@ struct PostRow: View {
                 .alert("Cannot Delete Post", error: $viewModel.error)
             }
             .labelStyle(.iconOnly)
-            .buttonStyle(.borderless)
         }
         .padding(.vertical)
     }
