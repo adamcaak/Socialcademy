@@ -35,11 +35,3 @@ extension Post {
         content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor quam id massa faucibus dignissim. Nullam eget metus id nisl malesuada condimentum. Nam viverra fringilla erat, ut fermentum nunc feugiat eu.",
         author: User.testUser)
 }
-
-private extension Post {
-    func setting<T>(_ property: WritableKeyPath<Post, T>, to newValue: T) -> Post {
-        var post = self
-        post[keyPath: property] = newValue
-        return post
-    }
-}
