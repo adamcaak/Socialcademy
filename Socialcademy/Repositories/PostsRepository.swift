@@ -10,6 +10,7 @@ import FirebaseFirestore
 
 struct PostsRepository: PostsRepositoryProtocol {
     let postsReference = Firestore.firestore().collection("posts_v2")
+    let favoritesReference = Firestore.firestore().collection("favorites")
     var user: User
     
     func create(_ post: Post) async throws {
