@@ -111,3 +111,8 @@ extension PostsRepositoryProtocol {
         post.author.id == user.id
     }
 }
+
+struct Favorite: Codable {
+    let postID: Post.ID
+    let userID: User.ID
+}
