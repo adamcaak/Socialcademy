@@ -43,13 +43,6 @@ class PostsViewModel: ObservableObject {
         }
     }
     
-    //    func makeCreateAction() -> NewPostForm.CreateAction {
-    //        return { [weak self] post in
-    //            try await self?.postsRepository.create(post)
-    //            self?.posts.value?.insert(post, at: 0)
-    //        }
-    //    }
-    
     func makePostRowViewModel(for post: Post) -> PostRowViewModel {
         let deleteAction = { [weak self] in
             try await self?.postsRepository.delete(post)
