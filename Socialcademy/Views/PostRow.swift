@@ -81,8 +81,7 @@ private extension PostRow {
 
 struct PostRow_Previews: PreviewProvider {
     static var previews: some View {
-        List {
-            PostRow(viewModel: PostRowViewModel(post: Post.testPost, deleteAction: {}, favoriteAction: {}))
-        }
+        PostRow(viewModel: PostRowViewModel(post: Post.testPost, deleteAction: {}, favoriteAction: {}))
+            .previewLayout(.sizeThatFits)
     }
 }
