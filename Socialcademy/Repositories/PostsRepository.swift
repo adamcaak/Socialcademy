@@ -11,7 +11,6 @@ import FirebaseFirestore
 struct PostsRepository: PostsRepositoryProtocol {
     let postsReference = Firestore.firestore().collection("posts_v2")
     let favoritesReference = Firestore.firestore().collection("favorites")
-    let newPost = post.setting(\.isFavorite, to: true)
     var user: User
     
     func create(_ post: Post) async throws {
@@ -130,5 +129,14 @@ private extension Post {
         var post = self
         post[keyPath: property] = newValue
         return post
+    }
+}
+
+private extension Query {
+    func getDocuments<T: Decodable>(as type: T.Type) async throws -> [T] {
+        let snapshot = try await getDocuments()
+        return snapshot.documents.compactMap { document in
+            try! document.data(as: type)
+        }
     }
 }
