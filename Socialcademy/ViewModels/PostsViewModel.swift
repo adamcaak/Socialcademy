@@ -15,7 +15,7 @@ class PostsViewModel: ObservableObject {
     private let filter: Filter
     
     enum Filter {
-        case all, favorites
+        case all, author(User), favorites
     }
     
     init(postsRepository: PostsRepositoryProtocol, filter: Filter = .all) {
@@ -27,6 +27,8 @@ class PostsViewModel: ObservableObject {
         switch filter {
         case .all:
             return "Posts"
+        case let .author(author):
+            return "\(author.name)'s Posts"
         case .favorites:
             return "Favorites"
         }
