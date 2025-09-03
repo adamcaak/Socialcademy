@@ -42,13 +42,15 @@ struct PostsRepository: PostsRepositoryProtocol {
     }
     
     func favorite(_ post: Post) async throws {
-        let document = postsReference.document(post.id.uuidString)
-        try await document.setData(["isFavorite": true], merge: true)
+        let favorite = Favorite(postID: post.id, userID: user.id)
+        let document = favoritesReference.document(favorite.id)
+        try await document.setData(from: favorite)
     }
     
     func unFavorite(_ post: Post) async throws {
-        let document = postsReference.document(post.id.uuidString)
-        try await document.setData(["isFavorite": false], merge: true)
+        let favorite = Favorite(postID: post.id, userID: user.id)
+        let document = favoritesReference.document(favorite.id)
+        try await document.delete()
     }
     
     func fetchPosts(by author: User) async throws -> [Post] {
