@@ -49,6 +49,10 @@ struct PostsRepository: PostsRepositoryProtocol {
         let document = postsReference.document(post.id.uuidString)
         try await document.setData(["isFavorite": false], merge: true)
     }
+    
+    func fetchPosts(by author: User) async throws -> [Post] {
+        return try await fetchPosts(from: postsReference.whereField("author.id", isEqualTo: author.id))
+    }
 }
 
 protocol PostsRepositoryProtocol {
