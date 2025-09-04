@@ -55,10 +55,14 @@ struct PostsRepository: PostsRepositoryProtocol {
         try await document.delete()
     }
     
-    private func fetchPosts(from query: Query) async throws -> [Post] {
-        return try await query
-            .order(by: "timeStamp", descending: true)
-            .getDocuments(as: Post.self)
+    func fetchPosts(from query: Query) async throws -> [Post] {
+        let (posts, favorites) = try await (
+            query.order(by: "timestamp", descending: true).getDocuments(as: Post.self),
+            fetchFavorites()
+        )
+        return posts.map { post in
+            post.setting(\.isFavorite, to: favorites.contains(post.id))
+        }
     }
 }
 
