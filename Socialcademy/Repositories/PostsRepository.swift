@@ -41,11 +41,13 @@ struct PostsRepository: PostsRepositoryProtocol {
         try await document.delete()
     }
     
-    func favorite(_ post: Post) async throws {
-        let favorite = Favorite(postID: post.id, userID: user.id)
-        let document = favoritesReference.document(favorite.id)
-        try await document.setData(from: favorite)
+    func fetchFavorites() async throws -> [Post.ID] {
+        return try await favoritesReference
+            .whereField("userID", isEqualTo: user.id)
+            .getDocuments(as: Favorite.self)
+            .map(\.postID)
     }
+    
     
     func unFavorite(_ post: Post) async throws {
         let favorite = Favorite(postID: post.id, userID: user.id)
@@ -53,8 +55,10 @@ struct PostsRepository: PostsRepositoryProtocol {
         try await document.delete()
     }
     
-    func fetchPosts(by author: User) async throws -> [Post] {
-        return try await fetchPosts(from: postsReference.whereField("author.id", isEqualTo: author.id))
+    private func fetchPosts(from query: Query) async throws -> [Post] {
+        return try await query
+            .order(by: "timeStamp", descending: true)
+            .getDocuments(as: Post.self)
     }
 }
 
@@ -87,11 +91,8 @@ struct PostsRepositoryStub: PostsRepositoryProtocol {
     func favorite(_ post: Post) async throws {}
     func unFavorite(_ post: Post) async throws {}
     
-    func fetchPosts(from query: Query) async throws -> [Post] {
-        return try await query
-            .order(by: "timestamp", descending: true)
-            .getDocuments(as: Post.self)
-        
+    func fetchPosts(by author: User) async throws -> [Post] {
+        return try await state.simulate()
     }
 }
 #endif
