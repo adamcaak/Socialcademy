@@ -19,7 +19,12 @@ struct PostsRepository: PostsRepositoryProtocol {
     }
     
     func fetchAllPosts() async throws -> [Post] {
-        return try await fetchPosts(from: postsReference)
+        let favorites = try await fetchFavorites()
+        guard !favorites.isEmpty else { return [] }
+        let posts = try await postsReference
+            .whereField("id", in: favorites.map(\.uuidString))
+            .order(by: "timestamp", descending: true)
+            .getDocuments(as: Post.self)
     }
     
     func fetchFavoritePosts() async throws -> [Post] {
