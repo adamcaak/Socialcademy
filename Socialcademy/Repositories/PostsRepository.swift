@@ -18,7 +18,7 @@ protocol PostsRepositoryProtocol {
     func create(_ post: Post) async throws
     func delete(_ post: Post) async throws
     func favorite(_ post: Post) async throws
-    func unfavorite(_ post: Post) async throws
+    func unFavorite(_ post: Post) async throws
 }
 
 extension PostsRepositoryProtocol {
@@ -52,7 +52,7 @@ struct PostsRepositoryStub: PostsRepositoryProtocol {
     
     func favorite(_ post: Post) async throws {}
     
-    func unfavorite(_ post: Post) async throws {}
+    func unFavorite(_ post: Post) async throws {}
 }
 #endif
 
@@ -100,7 +100,7 @@ struct PostsRepository: PostsRepositoryProtocol {
         try await document.setData(from: favorite)
     }
     
-    func unfavorite(_ post: Post) async throws {
+    func unFavorite(_ post: Post) async throws {
         let favorite = Favorite(postID: post.id, userID: user.id)
         let document = favoritesReference.document(favorite.id)
         try await document.delete()

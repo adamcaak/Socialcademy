@@ -11,7 +11,7 @@ struct NewPostForm: View {
     @StateObject var viewModel: FormViewModel<Post>
     
     @Environment(\.dismiss) private var dismiss
-
+    
     var body: some View {
         NavigationView {
             Form {
@@ -36,14 +36,14 @@ struct NewPostForm: View {
                 .listRowBackground(Color.accentColor)
             }
             .onSubmit(viewModel.submit)
-            .navigationTitle(Text("New Post"))
-            .onChange(of: viewModel.isWorking) { isWorking in
-                guard !isWorking, viewModel.error == nil else { return }
-                dismiss()
-            }
+            .navigationTitle("New Post")
         }
+        .alert("Cannot Create Post", error: $viewModel.error)
         .disabled(viewModel.isWorking)
-        .alert("Cannot create Post", error: $viewModel.error)
+        .onChange(of: viewModel.isWorking) { isWorking in
+            guard !isWorking else { return }
+            dismiss()
+        }
     }
 }
 
