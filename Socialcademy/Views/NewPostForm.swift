@@ -35,8 +35,6 @@ struct NewPostForm: View {
                 .padding()
                 .listRowBackground(Color.accentColor)
             }
-            
-            
             .onSubmit(viewModel.submit)
             .navigationTitle("New Post")
         }
