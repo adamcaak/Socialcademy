@@ -39,6 +39,11 @@ struct CommentsList: View {
         }
         .navigationTitle("Comments")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .bottomBar) {
+                NewCommentForm(viewModel: viewModel.makeNewCommentViewModel())
+            }
+        }
     }
 }
 
