@@ -168,3 +168,9 @@ protocol CommentsRepositoryProtocol {
     func create(_ comment: Comment) async throws
     func delete(_ comment: Comment) async throws
 }
+
+extension CommentsRepositoryProtocol {
+    func canDelete(_ comment: Comment) -> Bool {
+        [comment.author.id, posts.author.id].contains(user.id)
+    }
+}
