@@ -9,7 +9,6 @@ import SwiftUI
 
 struct CommentRow: View {
     let comment: Comment
-    @EnvironmentObject private var factory: ViewModelFactory
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
