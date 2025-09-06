@@ -9,7 +9,6 @@ import SwiftUI
 
 struct NewPostForm: View {
     @StateObject var viewModel: FormViewModel<Post>
-    
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {

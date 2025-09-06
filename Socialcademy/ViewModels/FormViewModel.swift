@@ -9,7 +9,6 @@ import Foundation
 
 @MainActor
 @dynamicMemberLookup
-
 class FormViewModel<Value>: ObservableObject {
     typealias Action = (Value) async throws -> Void
     
@@ -29,6 +28,12 @@ class FormViewModel<Value>: ObservableObject {
         self.action = action
     }
     
+    nonisolated func submit() {
+        Task {
+            await handleSubmit()
+        }
+    }
+    
     private func handleSubmit() async {
         isWorking = true
         do {
@@ -38,11 +43,5 @@ class FormViewModel<Value>: ObservableObject {
             self.error = error
         }
         isWorking = false
-    }
-    
-    nonisolated func submit() {
-        Task {
-            await handleSubmit()
-        }
     }
 }
