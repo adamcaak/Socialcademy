@@ -34,7 +34,7 @@ struct CommentsList: View {
                 List(comments) { comment in
                     CommentRow(comment: comment)
                 }
-                .animation(.default, value: viewModel.comments)
+                .animation(.default, value: comments)
             }
         }
         .navigationTitle("Comments")
