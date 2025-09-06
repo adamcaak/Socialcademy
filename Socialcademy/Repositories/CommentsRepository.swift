@@ -6,3 +6,22 @@
 //
 
 import Foundation
+import FirebaseStorage
+
+struct CommentsRepository: CommentsRepositoryProtocol {
+    let user: User
+    let post: Post
+    
+    func fetchComments() async throws -> [Comment] {
+        
+    }
+    
+    func create(_ comment: Comment) async throws {
+        
+    }
+    
+    func delete(_ comment: Comment) async throws {
+        
+    }
+}
+
