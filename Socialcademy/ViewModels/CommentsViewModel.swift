@@ -16,4 +16,15 @@ class CommentsViewModel: ObservableObject {
     init(commentsRepository: CommentsRepositoryProtocol) {
         self.commentsRepository = commentsRepository
     }
+    
+    func fetchComments() {
+        Task {
+            do {
+                comments = .loaded(try await commentsRepository.fetchComments())
+            } catch {
+                print("[CommentsViewModel] Cannot fetch comments: \(error)")
+                comments = .error(error)
+            }
+        }
+    }
 }
