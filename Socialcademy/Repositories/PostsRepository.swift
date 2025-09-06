@@ -164,7 +164,7 @@ private extension Query {
 protocol CommentsRepositoryProtocol {
     var user: User { get }
     var post: Post { get }
-    func fetchComments(for post: Post) async throws -> [Comment]
+    func fetchComments() async throws -> [Comment]
     func create(_ comment: Comment) async throws
     func delete(_ comment: Comment) async throws
 }
@@ -174,3 +174,18 @@ extension CommentsRepositoryProtocol {
         [comment.author.id, post.author.id].contains(user.id)
     }
 }
+
+#if DEBUG
+struct CommentsRepositoryStub: CommentsRepositoryProtocol {
+    let user = User.testUser
+    let post = Post.testPost
+    let state: Loadable<[Comment]>
+                        
+    func fetchComments() async throws -> [Comment] {
+        return try await state.simulate()
+    }
+    
+    func create(_ comment: Comment) async throws {}
+    func delete(_ comment: Comment) async throws {}
+}
+#endif
