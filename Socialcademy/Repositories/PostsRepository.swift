@@ -8,8 +8,6 @@
 import Foundation
 import FirebaseFirestore
 
-// MARK: - PostsRepositoryProtocol
-
 protocol PostsRepositoryProtocol {
     var user: User { get }
     func fetchAllPosts() async throws -> [Post]
@@ -26,8 +24,6 @@ extension PostsRepositoryProtocol {
         post.author.id == user.id
     }
 }
-
-// MARK: - PostsRepositoryStub
 
 #if DEBUG
 struct PostsRepositoryStub: PostsRepositoryProtocol {
@@ -55,8 +51,6 @@ struct PostsRepositoryStub: PostsRepositoryProtocol {
     func unFavorite(_ post: Post) async throws {}
 }
 #endif
-
-// MARK: - PostsRepository
 
 struct PostsRepository: PostsRepositoryProtocol {
     let user: User
@@ -165,4 +159,12 @@ private extension Query {
             try! document.data(as: type)
         }
     }
+}
+
+protocol CommentsRepositoryProtocol {
+    var user: User { get }
+    var posts: [Post] { get }
+    func fetchComments(for post: Post) async throws -> [Comment]
+    func create(_ comment: Comment) async throws
+    func delete(_ comment: Comment) async throws
 }
