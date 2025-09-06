@@ -13,3 +13,7 @@ struct Comment: Identifiable, Equatable, Codable {
     var timestamp = Date()
     var id = UUID()
 }
+
+extension Comment {
+    static let comment = Comment(content: "Comment Test Comment Test", author: User.testUser)
+}
