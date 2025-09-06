@@ -19,11 +19,14 @@ struct CommentsRepository: CommentsRepositoryProtocol {
     }
     
     func create(_ comment: Comment) async throws {
-        
+        let document = commentsReference.document(comment.id.uuidString)
+        try await document.setData(from: document)
     }
     
     func delete(_ comment: Comment) async throws {
-        
+        precondition(canDelete(comment))
+        let document = commentsReference.document(comment.id.uuidString)
+        try await document.delete()
     }
     
     private var commentsReference: CollectionReference {
