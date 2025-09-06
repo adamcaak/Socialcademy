@@ -163,7 +163,7 @@ private extension Query {
 
 protocol CommentsRepositoryProtocol {
     var user: User { get }
-    var posts: [Post] { get }
+    var post: Post { get }
     func fetchComments(for post: Post) async throws -> [Comment]
     func create(_ comment: Comment) async throws
     func delete(_ comment: Comment) async throws
@@ -171,6 +171,6 @@ protocol CommentsRepositoryProtocol {
 
 extension CommentsRepositoryProtocol {
     func canDelete(_ comment: Comment) -> Bool {
-        [comment.author.id, posts.author.id].contains(user.id)
+        [comment.author.id, post.author.id].contains(user.id)
     }
 }
