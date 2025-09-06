@@ -13,7 +13,9 @@ struct CommentsRepository: CommentsRepositoryProtocol {
     let post: Post
     
     func fetchComments() async throws -> [Comment] {
-        
+        return try await commentsReference
+            .order(by: "timeStamp", descending: true)
+            .getDocuments(as: Comment.self)
     }
     
     func create(_ comment: Comment) async throws {
