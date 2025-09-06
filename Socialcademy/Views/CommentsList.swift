@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CommentsView: View {
+struct CommentsList: View {
     @StateObject var viewModel: CommentsViewModel
     var body: some View {
         Group {
@@ -32,7 +32,7 @@ struct CommentsView: View {
                 )
             case let .loaded(comments):
                 List(comments) { comment in
-                        //
+                    CommentRow(comment: comment)
                 }
                 .animation(.default, value: viewModel.comments)
             }
