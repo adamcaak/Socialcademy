@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CommentRow: View {
     @ObservedObject var viewModel: CommentRowViewModel
+    @State private var showConfirmationDialog: Bool = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -26,12 +27,21 @@ struct CommentRow: View {
                 .fontWeight(.regular)
         }
         .padding(5)
+        .swipeActions {
+            if viewModel.canDeleteComment {
+                Button(role: .destructive) {
+                    showConfirmationDialog = true
+                } label: {
+                    Label("Delete", systemImage: "trash")
+                }
+            }
+        }
     }
 }
 
 struct CommentRow_Previews: PreviewProvider {
     static var previews: some View {
-        CommentRow(viewModel: CommentRowViewModel(comment: Comment.testComment, deleteAction: {}))
+        CommentRow(viewModel: CommentRowViewModel(comment: Comment.comment, deleteAction: {}))
             .previewLayout(.sizeThatFits)
     }
 }

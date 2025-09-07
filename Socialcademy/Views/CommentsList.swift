@@ -50,7 +50,7 @@ struct CommentsList: View {
 #if DEBUG
 struct CommentsList_Previews: PreviewProvider {
     static var previews: some View {
-        ListPreview(state: .loaded([Comment.testComment]))
+        ListPreview(state: .loaded([Comment.comment]))
         ListPreview(state: .empty)
         ListPreview(state: .error)
         ListPreview(state: .loading)
