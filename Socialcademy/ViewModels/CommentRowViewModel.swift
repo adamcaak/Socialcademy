@@ -14,6 +14,9 @@ class CommentRowViewModel: ObservableObject {
     typealias Action = () async throws -> Void
     private let deleteAction: Action?
     
+    @Published var error: Error?
+    var canDeleteComment: Bool { deleteAction != nil }
+    
     subscript<T>(dynamicMember keyPath: KeyPath<Comment, T>) -> T {
         comment[keyPath: keyPath]
     }
@@ -21,5 +24,19 @@ class CommentRowViewModel: ObservableObject {
     init(comment: Comment, deleteAction: Action?) {
         self.comment = comment
         self.deleteAction = deleteAction
+    }
+    
+    func deleteComment() async {
+        guard let deleteAction = deleteAction else {
+            preconditionFailure("Cannot delete comment: no delete action provided")
+        }
+        Task {
+            do {
+                try await deleteAction()
+            } catch {
+                print("[CommentRowViewModel] Cannot delete comment: \(error)")
+                self.error = error
+            }
+        }
     }
 }
