@@ -9,7 +9,7 @@ import Foundation
 
 @MainActor
 @dynamicMemberLookup
-class CommentRowViewModel: ObservableObject {
+class CommentRowViewModel: ObservableObject, ErrorHandler {
     @Published var comment: Comment
     typealias Action = () async throws -> Void
     private let deleteAction: Action?

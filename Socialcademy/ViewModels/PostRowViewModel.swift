@@ -10,7 +10,7 @@ import Foundation
 @MainActor
 @dynamicMemberLookup
 
-class PostRowViewModel: ObservableObject {
+class PostRowViewModel: ObservableObject, ErrorHandler {
     typealias Action = () async throws -> Void
     
     @Published var post: Post
