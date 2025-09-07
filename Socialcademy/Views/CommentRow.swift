@@ -36,6 +36,11 @@ struct CommentRow: View {
                 }
             }
         }
+        .confirmationDialog("Are you sure you want to delete this comment?", isPresented: $showConfirmationDialog, titleVisibility: .visible) {
+            Button("Delete", role: .destructive, action: {
+                viewModel.deleteComment()
+            })
+        }
     }
 }
 
