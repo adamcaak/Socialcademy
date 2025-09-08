@@ -14,7 +14,9 @@ struct ImagePickerButton<Label: View>: View {
     @State private var sourceType: UIImagePickerController.SourceType?
     
     var body: some View {
-        Button(action: {}) {
+        Button(action: {
+            showImageSourceDialog = true
+        }) {
             label()
         }
     }
