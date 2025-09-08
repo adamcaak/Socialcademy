@@ -19,6 +19,19 @@ struct ImagePickerButton<Label: View>: View {
         }) {
             label()
         }
+        .confirmationDialog("Choose Image", isPresented: $showImageSourceDialog) {
+            Button("Choose from library", action: {
+                sourceType = .photoLibrary
+            })
+            Button("Take photo", action: {
+                sourceType = .camera
+            })
+            if imageURL != nil {
+                Button("Remove photo", role: .destructive, action: {
+                    imageURL = nil
+                })
+            }
+        }
     }
 }
 
