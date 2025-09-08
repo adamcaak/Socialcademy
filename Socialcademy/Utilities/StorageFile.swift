@@ -33,4 +33,9 @@ extension StorageFile {
         let storageReference = storage.reference().child(path)
         return StorageFile(storageReference: storageReference)
     }
+    
+    static func atURL(_ downloadURL: URL) -> StorageFile {
+        let storageReference = storage.reference(forURL: downloadURL.absoluteString)
+        return StorageFile(storageReference: storageReference)
+    }
 }
