@@ -24,3 +24,13 @@ struct StorageFile {
         try await storageReference.delete()
     }
 }
+
+extension StorageFile {
+    private static let storage = Storage.storage()
+    
+    static func with(namespace: String, identifier: String) -> StorageFile {
+        let path = "\(namespace)/\(identifier)"
+        let storageReference = storage.reference().child(path)
+        return StorageFile(storageReference: storageReference)
+    }
+}
