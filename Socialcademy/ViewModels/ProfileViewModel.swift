@@ -10,7 +10,11 @@ import Foundation
 @MainActor
 class ProfileViewModel: ObservableObject, ErrorHandler {
     @Published var name: String
-    @Published var imageURL: URL?
+    @Published var imageURL: URL? {
+        didSet {
+                imageURLDidChange(from: oldValue)
+            }
+    }
     @Published var error: Error?
     
     private let authService: AuthService
@@ -23,5 +27,12 @@ class ProfileViewModel: ObservableObject, ErrorHandler {
     
     func signOut() {
         withErrorHandlingTask(perform: authService.signOut)
+    }
+    
+    private func imageURLDidChange(from oldValue: URL?) {
+        guard imageURL != oldValue else { return }
+        withErrorHandlingTask { [self] in
+            try await authService.updateProfileImage(to: imageURL)
+        }
     }
 }
