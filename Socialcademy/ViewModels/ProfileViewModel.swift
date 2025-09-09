@@ -8,7 +8,7 @@
 import Foundation
 
 @MainActor
-class ProfileViewModel: ObservableObject, ErrorHandler {
+class ProfileViewModel: ObservableObject, StateManager {
     @Published var name: String
     @Published var imageURL: URL? {
         didSet {
