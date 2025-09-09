@@ -32,6 +32,12 @@ struct ImagePickerButton<Label: View>: View {
                 })
             }
         }
+        .fullScreenCover(item: $sourceType) { sourceType in
+            ImagePickerView(sourceType: sourceType) {
+                imageURL = $0
+            }
+            .ignoresSafeArea()
+        }
     }
 }
 
