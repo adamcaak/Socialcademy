@@ -56,6 +56,20 @@ struct ImagePickerView: UIViewControllerRepresentable {
     func updateUIViewController(_ imagePicker: UIImagePickerController, context: Context) {}
 }
 
+class ImagePickerCoordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+    let view: ImagePickerView
+    
+    init(view: ImagePickerView) {
+        self.view = view
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let imageURL = info[.imageURL] as? URL else { return }
+        view.onSelect(imageURL)
+        view.dismiss()
+    }
+}
+
 #Preview {
     ImagePickerButton()
 }
