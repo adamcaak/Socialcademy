@@ -46,6 +46,26 @@ struct NewPostForm: View {
     }
 }
 
+struct ImageSection: View {
+    @Binding var imageURL: URL?
+    
+    var body: some View {
+        Section("Image") {
+            AsyncImage(url: imageURL) { image in
+                image
+                    .resizable()
+                    .scaledToFit()
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+            } placeholder: {
+                EmptyView()
+            }
+            ImagePickerButton(imageURL: $imageURL) {
+                Label("Choose Image", systemImage: "photo.fill")
+            }
+        }
+    }
+}
+
 struct NewPostForm_Previews: PreviewProvider {
     static var previews: some View {
         NewPostForm(viewModel: FormViewModel(initialValue: Post.testPost, action: { _ in }))
