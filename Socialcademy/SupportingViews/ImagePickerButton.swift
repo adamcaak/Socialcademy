@@ -76,6 +76,10 @@ class ImagePickerCoordinator: NSObject, UINavigationControllerDelegate, UIImageP
     }
 }
 
+extension UIImagePickerController.SourceType: Identifiable {
+    public var id: String { "\(self)" }
+}
+
 #Preview {
     ImagePickerButton()
 }
