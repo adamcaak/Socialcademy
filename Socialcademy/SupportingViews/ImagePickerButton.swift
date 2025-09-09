@@ -35,6 +35,27 @@ struct ImagePickerButton<Label: View>: View {
     }
 }
 
+struct ImagePickerView: UIViewControllerRepresentable {
+    let sourceType: UIImagePickerController.SourceType
+    let onSelect: (URL) -> Void
+    
+    @Environment(\.dismiss) var dismiss
+    
+    func makeCoordinator() -> ImagePickerCoordinator {
+        return ImagePickerCoordinator(view: self)
+    }
+    
+    func makeUIViewController(context: Context) -> UIImagePickerController {
+        let imagePicker = UIImagePickerController()
+        imagePicker.allowsEditing = true
+        imagePicker.delegate = context.coordinator
+        imagePicker.sourceType = sourceType
+        return imagePicker
+    }
+    
+    func updateUIViewController(_ imagePicker: UIImagePickerController, context: Context) {}
+}
+
 #Preview {
     ImagePickerButton()
 }
