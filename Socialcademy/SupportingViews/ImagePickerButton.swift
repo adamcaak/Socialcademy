@@ -44,7 +44,7 @@ struct ImagePickerButton<Label: View>: View {
     }
 }
 
-extension UIImagePickerController.SourceType: Identifiable {
+extension UIImagePickerController.SourceType: @retroactive Identifiable {
     public var id: String { "\(self)" }
 }
 
