@@ -93,6 +93,8 @@ struct PostsRepository: PostsRepositoryProtocol {
         precondition(canDelete(post))
         let document = postsReference.document(post.id.uuidString)
         try await document.delete()
+        let image = post.imageURL.map(StorageFile.atURL(_:))
+        try await image?.delete()
     }
     
     func favorite(_ post: Post) async throws {
