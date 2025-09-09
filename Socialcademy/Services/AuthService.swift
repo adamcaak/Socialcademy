@@ -17,7 +17,7 @@ class AuthService: ObservableObject {
     
     init() {
         listener = auth.addStateDidChangeListener { [weak self] _, user in
-            self?.user = user.map(User.init(from:))
+            self?.user = user.map { User(from: $0) }
         }
     }
     
@@ -54,18 +54,18 @@ class AuthService: ObservableObject {
     }
 }
 
-private extension FirebaseAuth.User {
-    func updateProfile<T>(_ keyPath: WritableKeyPath<UserProfileChangeRequest, T>, to newValue: T) async throws {
-        var profileChangeRequest = createProfileChangeRequest()
-        profileChangeRequest[keyPath: keyPath] = newValue
-        try await profileChangeRequest.commitChanges()
-    }
-}
-
 private extension User {
     init(from firebaseUser: FirebaseAuth.User) {
         self.id = firebaseUser.uid
         self.name = firebaseUser.displayName ?? ""
         self.imageURL = firebaseUser.photoURL
+    }
+}
+
+private extension FirebaseAuth.User {
+    func updateProfile<T>(_ keyPath: WritableKeyPath<UserProfileChangeRequest, T>, to newValue: T) async throws {
+        var profileChangeRequest = createProfileChangeRequest()
+        profileChangeRequest[keyPath: keyPath] = newValue
+        try await profileChangeRequest.commitChanges()
     }
 }

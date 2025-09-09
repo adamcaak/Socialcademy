@@ -7,13 +7,14 @@
 
 import Foundation
 import FirebaseStorage
+//import FirebaseStorageSwift
 
 struct StorageFile {
     private let storageReference: StorageReference
     
     func putFile(from fileURL: URL) async throws -> Self {
-        _ = try await storageReference.putFile(from: fileURL)
-        return self
+        _ = try await storageReference.putFileAsync(from: fileURL)
+        return self // for method chaining
     }
     
     func getDownloadURL() async throws -> URL {

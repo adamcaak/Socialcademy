@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PostsList: View {
     @StateObject var viewModel: PostsViewModel
+    
     @State private var searchText = ""
     @State private var showNewPostForm = false
     
@@ -28,10 +29,7 @@ struct PostsList: View {
             case .empty:
                 EmptyListView(
                     title: "No Posts",
-                    message: "There aren’t any posts yet.",
-                    retryAction: {
-                        viewModel.fetchPosts()
-                    }
+                    message: "There aren’t any posts yet."
                 )
             case let .loaded(posts):
                 ScrollView {
@@ -45,33 +43,31 @@ struct PostsList: View {
                 }
             }
         }
-        .searchable(text: $searchText)
         .navigationTitle(viewModel.title)
-        .toolbar {
-            Button {
-                showNewPostForm = true
-            } label: {
-                Label("New Post",systemImage: "square.and.pencil")
-            }
+        .onAppear {
+            viewModel.fetchPosts()
         }
         .sheet(isPresented: $showNewPostForm) {
             NewPostForm(viewModel: viewModel.makeNewPostViewModel())
         }
-        .onAppear {
-            viewModel.fetchPosts()
+        .toolbar {
+            Button {
+                showNewPostForm = true
+            } label: {
+                Label("New Post", systemImage: "square.and.pencil")
+            }
         }
     }
 }
 
-@MainActor
-private struct ListPreview: View {
-    let state: Loadable<[Post]>
-    
-    var body: some View {
-        let postsRepository = PostsRepositoryStub(state: state)
-        let viewModel = PostsViewModel(postsRepository: postsRepository)
-        NavigationView {
-            PostsList(viewModel: viewModel)
+extension PostsList {
+    struct RootView: View {
+        @StateObject var viewModel: PostsViewModel
+        
+        var body: some View {
+            NavigationView {
+                PostsList(viewModel: viewModel)
+            }
         }
     }
 }
@@ -83,6 +79,20 @@ struct PostsList_Previews: PreviewProvider {
         ListPreview(state: .empty)
         ListPreview(state: .error)
         ListPreview(state: .loading)
+    }
+    
+    @MainActor
+    private struct ListPreview: View {
+        let state: Loadable<[Post]>
+        
+        var body: some View {
+            let postsRepository = PostsRepositoryStub(state: state)
+            let viewModel = PostsViewModel(postsRepository: postsRepository)
+            NavigationView {
+                PostsList(viewModel: viewModel)
+                    .environmentObject(ViewModelFactory.preview)
+            }
+        }
     }
 }
 #endif

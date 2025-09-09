@@ -10,7 +10,8 @@ import SwiftUI
 struct EmptyListView: View {
     let title: String
     let message: String
-    let retryAction: (() -> Void)?
+    var retryAction: (() -> Void)?
+    
     var body: some View {
         VStack(alignment: .center, spacing: 10) {
             Text(title)
@@ -43,8 +44,7 @@ struct EmptyListView_Previews: PreviewProvider {
         )
         EmptyListView(
             title: "No Posts",
-            message: "There aren’t any posts yet.",
-            retryAction: {}
+            message: "There aren’t any posts yet."
         )
     }
 }

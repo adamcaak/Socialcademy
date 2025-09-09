@@ -15,5 +15,5 @@ struct Comment: Identifiable, Equatable, Codable {
 }
 
 extension Comment {
-    static let comment = Comment(content: "Comment Test Comment Test", author: User.testUser)
+    static let testComment = Comment(content: "Lorem ipsum dolor set amet.", author: User.testUser)
 }

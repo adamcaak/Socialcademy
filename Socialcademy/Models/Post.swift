@@ -13,7 +13,7 @@ struct Post: Identifiable, Equatable {
     var author: User
     var imageURL: URL?
     var isFavorite = false
-    var timeStamp = Date()
+    var timestamp = Date()
     var id = UUID()
     
     func contains(_ string: String) -> Bool {
@@ -27,7 +27,7 @@ struct Post: Identifiable, Equatable {
 
 extension Post: Codable {
     enum CodingKeys: CodingKey {
-        case title, content, author, imageURL, timeStamp, id
+        case title, content, author, imageURL, timestamp, id
     }
 }
 

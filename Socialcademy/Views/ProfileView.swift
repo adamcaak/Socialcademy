@@ -6,10 +6,10 @@
 //
 
 import SwiftUI
-import FirebaseAuth
 
 struct ProfileView: View {
     @StateObject var viewModel: ProfileViewModel
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -26,12 +26,12 @@ struct ProfileView: View {
                 }
                 Spacer()
             }
-        }
-        .navigationTitle("Profile")
-        .toolbar {
-            Button("Sign Out", action: {
-                viewModel.signOut()
-            })
+            .navigationTitle("Profile")
+            .toolbar {
+                Button("Sign Out", action: {
+                    viewModel.signOut()
+                })
+            }
         }
         .alert("Error", error: $viewModel.error)
         .disabled(viewModel.isWorking)

@@ -7,6 +7,9 @@
 
 import Foundation
 import FirebaseFirestore
+//import FirebaseFirestoreSwift
+
+// MARK: - PostsRepositoryProtocol
 
 protocol PostsRepositoryProtocol {
     var user: User { get }
@@ -16,7 +19,7 @@ protocol PostsRepositoryProtocol {
     func create(_ post: Post) async throws
     func delete(_ post: Post) async throws
     func favorite(_ post: Post) async throws
-    func unFavorite(_ post: Post) async throws
+    func unfavorite(_ post: Post) async throws
 }
 
 extension PostsRepositoryProtocol {
@@ -24,6 +27,8 @@ extension PostsRepositoryProtocol {
         post.author.id == user.id
     }
 }
+
+// MARK: - PostsRepositoryStub
 
 #if DEBUG
 struct PostsRepositoryStub: PostsRepositoryProtocol {
@@ -48,9 +53,11 @@ struct PostsRepositoryStub: PostsRepositoryProtocol {
     
     func favorite(_ post: Post) async throws {}
     
-    func unFavorite(_ post: Post) async throws {}
+    func unfavorite(_ post: Post) async throws {}
 }
 #endif
+
+// MARK: - PostsRepository
 
 struct PostsRepository: PostsRepositoryProtocol {
     let user: User
@@ -103,7 +110,7 @@ struct PostsRepository: PostsRepositoryProtocol {
         try await document.setData(from: favorite)
     }
     
-    func unFavorite(_ post: Post) async throws {
+    func unfavorite(_ post: Post) async throws {
         let favorite = Favorite(postID: post.id, userID: user.id)
         let document = favoritesReference.document(favorite.id)
         try await document.delete()
@@ -144,57 +151,3 @@ private extension Post {
         return post
     }
 }
-
-private extension DocumentReference {
-    func setData<T: Encodable>(from value: T) async throws {
-        return try await withCheckedThrowingContinuation { continuation in
-            // Method only throws if there’s an encoding error, which indicates a problem with our model.
-            // We handled this with a force try, while all other errors are passed to the completion handler.
-            try! setData(from: value) { error in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                    return
-                }
-                continuation.resume()
-            }
-        }
-    }
-}
-
-private extension Query {
-    func getDocuments<T: Decodable>(as type: T.Type) async throws -> [T] {
-        let snapshot = try await getDocuments()
-        return snapshot.documents.compactMap { document in
-            try! document.data(as: type)
-        }
-    }
-}
-
-protocol CommentsRepositoryProtocol {
-    var user: User { get }
-    var post: Post { get }
-    func fetchComments() async throws -> [Comment]
-    func create(_ comment: Comment) async throws
-    func delete(_ comment: Comment) async throws
-}
-
-extension CommentsRepositoryProtocol {
-    func canDelete(_ comment: Comment) -> Bool {
-        [comment.author.id, post.author.id].contains(user.id)
-    }
-}
-
-#if DEBUG
-struct CommentsRepositoryStub: CommentsRepositoryProtocol {
-    let user = User.testUser
-    let post = Post.testPost
-    let state: Loadable<[Comment]>
-                        
-    func fetchComments() async throws -> [Comment] {
-        return try await state.simulate()
-    }
-    
-    func create(_ comment: Comment) async throws {}
-    func delete(_ comment: Comment) async throws {}
-}
-#endif

@@ -14,5 +14,9 @@ struct User: Identifiable, Equatable, Codable {
 }
 
 extension User {
-    static let testUser = User(id: "", name: "Jammie Harris", imageURL: URL(string:"https://source.unsplash.com/lw9LrnpUmWw/480x480"))
+    static let testUser = User(
+        id: "",
+        name: "Jamie Harris",
+        imageURL: URL(string: "https://source.unsplash.com/lw9LrnpUmWw/480x480")
+    )
 }

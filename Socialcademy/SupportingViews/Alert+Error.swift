@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct Alert_Error: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+extension View {
+    func alert(_ title: String, error: Binding<Error?>) -> some View {
+        modifier(AlertViewModifier(title: title, error: error))
     }
 }
 
-private struct ErrorAlertViewModifier: ViewModifier {
+private struct AlertViewModifier: ViewModifier {
     let title: String
     @Binding var error: Error?
     
@@ -32,12 +32,11 @@ private extension Optional {
     }
 }
 
-extension View {
-    func alert(_ title: String, error: Binding<Error?>) -> some View {
-        modifier(ErrorAlertViewModifier(title: title, error: error))
+struct AlertViewModifier_Previews: PreviewProvider {
+    private static let error = NSError(domain: "PreviewError", code: 0, userInfo: nil)
+    
+    static var previews: some View {
+        Text("Preview")
+            .alert("Error", error: .constant(error))
     }
-}
-
-#Preview {
-    Alert_Error()
 }

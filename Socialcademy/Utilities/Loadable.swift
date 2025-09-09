@@ -14,7 +14,7 @@ enum Loadable<Value> {
     
     var value: Value? {
         get {
-            if case let .loaded(value) = self  {
+            if case let .loaded(value) = self {
                 return value
             }
             return nil

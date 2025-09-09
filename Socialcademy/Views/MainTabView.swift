@@ -9,13 +9,14 @@ import SwiftUI
 
 struct MainTabView: View {
     @EnvironmentObject private var factory: ViewModelFactory
+    
     var body: some View {
         TabView {
             NavigationView {
                 PostsList(viewModel: factory.makePostsViewModel())
             }
             .tabItem {
-                Label("Posts List", systemImage: "list.dash")
+                Label("Posts", systemImage: "list.dash")
             }
             NavigationView {
                 PostsList(viewModel: factory.makePostsViewModel(filter: .favorites))

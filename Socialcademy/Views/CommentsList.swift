@@ -7,8 +7,11 @@
 
 import SwiftUI
 
+// MARK: - CommentsList
+
 struct CommentsList: View {
     @StateObject var viewModel: CommentsViewModel
+    
     var body: some View {
         Group {
             switch viewModel.comments {
@@ -47,10 +50,37 @@ struct CommentsList: View {
     }
 }
 
+// MARK: - NewCommentForm
+
+private extension CommentsList {
+    struct NewCommentForm: View {
+        @StateObject var viewModel: FormViewModel<Comment>
+        
+        var body: some View {
+            HStack {
+                TextField("Comment", text: $viewModel.content)
+                Button(action: viewModel.submit) {
+                    if viewModel.isWorking {
+                        ProgressView()
+                    } else {
+                        Label("Post", systemImage: "paperplane")
+                    }
+                }
+            }
+            .alert("Cannot Post Comment", error: $viewModel.error)
+            .animation(.default, value: viewModel.isWorking)
+            .disabled(viewModel.isWorking)
+            .onSubmit(viewModel.submit)
+        }
+    }
+}
+
+// MARK: - Previews
+
 #if DEBUG
 struct CommentsList_Previews: PreviewProvider {
     static var previews: some View {
-        ListPreview(state: .loaded([Comment.comment]))
+        ListPreview(state: .loaded([Comment.testComment]))
         ListPreview(state: .empty)
         ListPreview(state: .error)
         ListPreview(state: .loading)

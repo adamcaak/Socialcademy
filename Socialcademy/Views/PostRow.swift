@@ -11,15 +11,17 @@ import SwiftUI
 
 struct PostRow: View {
     @ObservedObject var viewModel: PostRowViewModel
-    @EnvironmentObject private var factory: ViewModelFactory
+    
     @State private var showConfirmationDialog = false
+    
+    @EnvironmentObject private var factory: ViewModelFactory
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 AuthorView(author: viewModel.author)
                 Spacer()
-                Text(viewModel.timeStamp.formatted(date: .abbreviated, time: .omitted))
+                Text(viewModel.timestamp.formatted(date: .abbreviated, time: .omitted))
                     .font(.caption)
             }
             .foregroundColor(.gray)
@@ -75,11 +77,30 @@ private extension PostRow {
             } label: {
                 HStack {
                     ProfileImage(url: author.imageURL)
-                        .frame(width: 40, height: 40)
+                        .frame(width: 32, height: 32)
                     Text(author.name)
                         .font(.subheadline)
                         .fontWeight(.medium)
                 }
+            }
+        }
+    }
+}
+
+// MARK: - PostImage
+
+private extension PostRow {
+    struct PostImage: View {
+        let url: URL
+        
+        var body: some View {
+            AsyncImage(url: url) { image in
+                image
+                    .resizable()
+                    .scaledToFit()
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+            } placeholder: {
+                Color.clear
             }
         }
     }
@@ -102,21 +123,6 @@ private extension PostRow {
             }
             .foregroundColor(isFavorite ? .red : .gray)
             .animation(.default, value: isFavorite)
-        }
-    }
-}
-
-struct PostImage: View {
-    let url: URL
-    
-    var body: some View {
-        AsyncImage(url: url) { image in
-            image
-                .resizable()
-                .scaledToFit()
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-        } placeholder: {
-            Color.clear
         }
     }
 }

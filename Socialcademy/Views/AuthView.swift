@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AuthView: View {
     @StateObject var viewModel = AuthViewModel()
+    
     var body: some View {
         if let viewModelFactory = viewModel.makeViewModelFactory() {
             MainTabView()
@@ -23,37 +24,16 @@ struct AuthView: View {
     }
 }
 
-struct CreateAccountForm: View {
-    @StateObject var viewModel: AuthViewModel.CreateAccountViewModel
-    @Environment(\.dismiss) private var dismiss
-    
-    var body: some View {
-        Form {
-            TextField("Name", text: $viewModel.name)
-                .textContentType(.name)
-            TextField("Email", text: $viewModel.email)
-                .textContentType(.emailAddress)
-            SecureField("Password", text: $viewModel.password)
-                .textContentType(.newPassword)
-        } footer: {
-            Button("Create Account", action: viewModel.submit)
-                .buttonStyle(.primary)
-            Button("Sign In", action: dismiss.callAsFunction)
-        }
-        .onSubmit(viewModel.submit)
-        .alert("Cannot Create Account", error: $viewModel.error)
-        .disabled(viewModel.isWorking)
-    }
-}
-
-struct SignInForm<Footer: View>: View {
-    @StateObject var viewModel: AuthViewModel.SignInViewModel
-    @ViewBuilder let footer: () -> Footer
-    
-    var body: some View {
-        Form {
+private extension AuthView {
+    struct SignInForm<Footer: View>: View {
+        @StateObject var viewModel: AuthViewModel.SignInViewModel
+        @ViewBuilder let footer: () -> Footer
+        
+        var body: some View {
+            Form {
                 TextField("Email", text: $viewModel.email)
                     .textContentType(.emailAddress)
+                    .textInputAutocapitalization(.never)
                 SecureField("Password", text: $viewModel.password)
                     .textContentType(.password)
             } footer: {
@@ -62,52 +42,65 @@ struct SignInForm<Footer: View>: View {
                 footer()
                     .padding()
             }
-            .onSubmit(viewModel.submit)
             .alert("Cannot Sign In", error: $viewModel.error)
             .disabled(viewModel.isWorking)
-    }
-}
-
-struct Form<Content: View, Footer: View>: View {
-    @ViewBuilder let content: () -> Content
-    @ViewBuilder let footer: () -> Footer
-    
-    var body: some View {
-        VStack {
-            Text("Socialcademy")
-                .font(.title.bold())
-            content()
-                .padding()
-                .background(Color.secondary.opacity(0.15))
-                .cornerRadius(10)
-            footer()
+            .onSubmit(viewModel.submit)
         }
-        .navigationBarHidden(true)
-        .padding()
     }
 }
 
-struct PrimaryButtonStyle: ButtonStyle {
-    @Environment(\.isEnabled) private var isEnabled
-    
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
+private extension AuthView {
+    struct CreateAccountForm: View {
+        @StateObject var viewModel: AuthViewModel.CreateAccountViewModel
+        
+        @Environment(\.dismiss) private var dismiss
+        
+        var body: some View {
+            Form {
+                TextField("Name", text: $viewModel.name)
+                    .textContentType(.name)
+                    .textInputAutocapitalization(.words)
+                TextField("Email", text: $viewModel.email)
+                    .textContentType(.emailAddress)
+                    .textInputAutocapitalization(.never)
+                SecureField("Password", text: $viewModel.password)
+                    .textContentType(.newPassword)
+            } footer: {
+                Button("Create Account", action: viewModel.submit)
+                    .buttonStyle(.primary)
+                Button("Sign In", action: dismiss.callAsFunction)
+                    .padding()
+            }
+            .alert("Cannot Create Account", error: $viewModel.error)
+            .disabled(viewModel.isWorking)
+            .onSubmit(viewModel.submit)
+        }
+    }
+}
+
+private extension AuthView {
+    struct Form<Fields: View, Footer: View>: View {
+        @ViewBuilder let fields: () -> Fields
+        @ViewBuilder let footer: () -> Footer
+        
+        var body: some View {
+            VStack {
+                Text("Socialcademy")
+                    .font(.title.bold())
+                fields()
+                    .padding()
+                    .background(Color.secondary.opacity(0.15))
+                    .cornerRadius(10)
+                footer()
+            }
+            .navigationBarHidden(true)
             .padding()
-            .frame(maxWidth: .infinity)
-            .foregroundColor(.white)
-            .background(Color.accentColor)
-            .cornerRadius(10)
-            .animation(.default, value: isEnabled)
+        }
     }
 }
 
-extension ButtonStyle where Self == PrimaryButtonStyle {
-    static var primary: PrimaryButtonStyle {
-        PrimaryButtonStyle()
+struct AuthView_Previews: PreviewProvider {
+    static var previews: some View {
+        AuthView()
     }
-}
-
-
-#Preview {
-    AuthView()
 }

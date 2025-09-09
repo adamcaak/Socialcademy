@@ -10,8 +10,6 @@ import Foundation
 @MainActor
 class AuthViewModel: ObservableObject {
     @Published var user: User?
-    @Published var email: String = ""
-    @Published var password: String = ""
     
     private let authService = AuthService()
     
@@ -19,29 +17,19 @@ class AuthViewModel: ObservableObject {
         authService.$user.assign(to: &$user)
     }
     
-    func signIn() {
-        Task {
-            do {
-                try await authService.signIn(email: email, password: password)
-            } catch {
-                print("[AuthViewModel] Cannot sign in: \(error)")
-            }
-        }
-    }
-    
-    func makeSignInViewModel() -> SignInViewModel {
-        return SignInViewModel(action: authService.signIn(email:password:))
-    }
-
-    func makeCreateAccountViewModel() -> CreateAccountViewModel {
-        return CreateAccountViewModel(action: authService.createAccount(name:email:password:))
-    }
-    
     func makeViewModelFactory() -> ViewModelFactory? {
         guard let user = user else {
             return nil
         }
         return ViewModelFactory(user: user, authService: authService)
+    }
+    
+    func makeSignInViewModel() -> SignInViewModel {
+        return SignInViewModel(action: authService.signIn(email:password:))
+    }
+    
+    func makeCreateAccountViewModel() -> CreateAccountViewModel {
+        return CreateAccountViewModel(action: authService.createAccount(name:email:password:))
     }
 }
 

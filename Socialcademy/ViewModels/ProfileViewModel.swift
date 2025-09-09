@@ -12,10 +12,11 @@ class ProfileViewModel: ObservableObject, StateManager {
     @Published var name: String
     @Published var imageURL: URL? {
         didSet {
-                imageURLDidChange(from: oldValue)
-            }
+            imageURLDidChange(from: oldValue)
+        }
     }
     @Published var error: Error?
+    @Published var isWorking = false
     
     private let authService: AuthService
     
@@ -26,12 +27,12 @@ class ProfileViewModel: ObservableObject, StateManager {
     }
     
     func signOut() {
-        withErrorHandlingTask(perform: authService.signOut)
+        withStateManagingTask(perform: authService.signOut)
     }
     
     private func imageURLDidChange(from oldValue: URL?) {
         guard imageURL != oldValue else { return }
-        withErrorHandlingTask { [self] in
+        withStateManagingTask { [self] in
             try await authService.updateProfileImage(to: imageURL)
         }
     }

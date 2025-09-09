@@ -8,15 +8,25 @@
 import Foundation
 
 @MainActor
-protocol StageMenager: AnyObject {
+protocol StateManager: AnyObject {
     var error: Error? { get set }
-    var isWorking: Bool { get set}
+    var isWorking: Bool { get set }
 }
 
 extension StateManager {
     var isWorking: Bool {
         get { false }
         set {}
+    }
+}
+
+extension StateManager {
+    typealias Action = () async throws -> Void
+    
+    nonisolated func withStateManagingTask(perform action: @escaping Action) {
+        Task {
+            await withStateManagement(perform: action)
+        }
     }
     
     private func withStateManagement(perform action: @escaping Action) async {
@@ -28,11 +38,5 @@ extension StateManager {
             self.error = error
         }
         isWorking = false
-    }
-    
-    nonisolated func withStateManagingTask(perform action: @escaping Action) {
-        Task {
-            await withStateManagement(perform: action)
-        }
     }
 }
