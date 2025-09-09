@@ -8,7 +8,7 @@
 import Foundation
 
 @MainActor
-protocol StateManager: AnyObject {
+protocol StageMenager: AnyObject {
     var error: Error? { get set }
     var isWorking: Bool { get set}
 }
